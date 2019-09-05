@@ -39,16 +39,19 @@ def limit_handled(cursor):
             
 def get_tweets(screen_name, tweet_count):
     counter = tweet_count
-    tweets = []
-    while len(tweets) < tweet_count:
-        tweets = api.user_timeline(screen_name=screen_name,
-                                   count=counter,
-                                   exclude_replies=True,
-                                   tweet_mode="extended")
-        counter += 1
-    return {twt.created_at.strftime("%d-%m-%y %H:%H:%S"): 
-            twt.full_text.replace('\n', ' ')
-            for twt in tweets}
+    timeline_obj = []
+    while len(timeline_obj) < tweet_count:
+        timeline_obj = api.user_timeline(
+                                    screen_name=screen_name,
+                                    count=counter,
+                                    exclude_replies=True,
+                                    tweet_mode="extended"
+                            )
+        counter += 5
+    tweets = {twt.created_at.strftime("%d-%m-%y %H:%H:%S"): 
+              twt.full_text.replace('\n', ' ')
+              for twt in timeline_obj}
+    return dict((list(tweets.items())[:tweet_count]))
 
 
 if __name__ == "__main__":
