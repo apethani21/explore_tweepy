@@ -4,6 +4,7 @@ from pprint import pprint
 from twilio.rest import Client
 import tweepy
 
+
 def get_tweepy_auth():
     home = os.path.expanduser('~')
     with open(f"{home}/twitter_key", 'r') as f:
@@ -21,6 +22,7 @@ def get_tweepy_auth():
         "twitter_secret_access_token": twitter_secret_access_token
     }
 
+
 def set_tweepy_account():
     credentials = get_tweepy_auth()
     auth = tweepy.OAuthHandler(credentials["twitter_key"],
@@ -29,6 +31,7 @@ def set_tweepy_account():
                           credentials["twitter_secret_access_token"])
     return auth
 
+
 def limit_handled(cursor):
     while True:
         try:
@@ -36,7 +39,8 @@ def limit_handled(cursor):
         except tweepy.RateLimitError:
             print("Rate Limited. Sleeping.")
             time.sleep(60)
-            
+
+
 def get_tweets(screen_name, tweet_count):
     counter = tweet_count
     timeline_obj = []
@@ -48,7 +52,7 @@ def get_tweets(screen_name, tweet_count):
                                     tweet_mode="extended"
                             )
         counter += 5
-    tweets = {twt.created_at.strftime("%d-%m-%y %H:%H:%S"): 
+    tweets = {twt.created_at.strftime("%d-%m-%y %H:%H:%S"):
               twt.full_text.replace('\n', ' ')
               for twt in timeline_obj}
     return dict((list(tweets.items())[:tweet_count]))
