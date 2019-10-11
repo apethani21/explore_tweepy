@@ -41,7 +41,7 @@ def limit_handled(cursor):
             time.sleep(60)
 
 
-def get_tweets(screen_name, tweet_count):
+def get_tweets(screen_name, tweet_count, api):
     counter = tweet_count
     timeline_obj = []
     while len(timeline_obj) < tweet_count:
@@ -61,4 +61,4 @@ def get_tweets(screen_name, tweet_count):
 if __name__ == "__main__":
     tweepy_auth = set_tweepy_account()
     api = tweepy.API(tweepy_auth)
-    pprint(get_tweets('northernline', 3))
+    pprint(get_tweets('northernline', 3, api))
