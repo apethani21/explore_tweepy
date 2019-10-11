@@ -42,4 +42,6 @@ def email_me_latest_tweets(handle='northernline', n=3):
 if __name__ == "__main__":
     args = sys.argv[1:]
     args = dict([arg.split('=') for arg in args])
-    email_me_latest_tweets(**args)
+    handle = args.get('handle', 'northernline')
+    number_of_tweets = int(args.get('n', 3))
+    email_me_latest_tweets(handle, number_of_tweets)
