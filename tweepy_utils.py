@@ -52,7 +52,7 @@ def get_tweets(screen_name, tweet_count, api):
                                     tweet_mode="extended"
                             )
         counter += 5
-    tweets = {twt.created_at.strftime("%d-%m-%y %H:%H:%S"):
+    tweets = {twt.created_at.strftime("%d %b %y %H:%H:%S"):
               twt.full_text.replace('\n', ' ')
               for twt in timeline_obj}
     return dict((list(tweets.items())[:tweet_count]))
