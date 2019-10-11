@@ -61,8 +61,6 @@ def email_me_latest_tweets(handle='northernline', n=3):
     html_main = MIMEText(html, "html")
     message.attach(plain_backup)
     message.attach(html_main)
-    #printable = set(string.printable)
-    #clean_tweets = ''.join(filter(lambda x: x in printable, str(tweets)))
     send_myself_message(message.as_string())
     return
 
