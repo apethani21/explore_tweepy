@@ -24,6 +24,7 @@ def create_tweet_html_body(time, tweet):
         <p>
         <b> {time} </b><br>
         {tweet} <br>
+        <hr>
         </p>
       </body>
     </html>
@@ -44,6 +45,7 @@ def create_weather_html_body(weather_info):
         <b>Summary</b>: {weather_info["summary"]} <br>
         <b>Chance of {weather_info["precipType"]}</b>: {weather_info["precipProbability"]} <br>
         <b>Intensity of {weather_info["precipType"]}</b>: {weather_info["precipIntensity"]} inch/hour <br>
+        <hr>
         </p>
       </body>
     </html>
