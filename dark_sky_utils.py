@@ -83,7 +83,8 @@ def email_me_latest_weather(weather_updates):
     message = MIMEMultipart("alternative")
     message["Subject"] = f"Weather update"
     text = '\n'.join([str(update) for update in weather_updates])
-    html = "".join([create_weather_html_body(update) for update in weather_updates])
+    html = "".join([create_weather_html_body(update)
+                    for update in weather_updates])
     plain_backup = MIMEText(text, "plain")
     html_main = MIMEText(html, "html")
     message.attach(plain_backup)

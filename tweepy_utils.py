@@ -1,8 +1,7 @@
 import os
 import time
-from pprint import pprint
-from twilio.rest import Client
 import tweepy
+from pprint import pprint
 
 
 def get_tweepy_auth():

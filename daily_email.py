@@ -1,12 +1,11 @@
 import os
-import sys
 import ssl
 import json
 import smtplib
 import tweepy
 import tweepy_utils
 import dark_sky_utils
-from datetime import datetime, timedelta
+from datetime import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -52,14 +51,14 @@ def create_weather_html_body(weather_info):
     return body
 
 
-def get_raw_content(twitter_args = {'screen_name': 'northernline',
-                                    'tweet_count': 3},
-                    dark_sky_args = [{'area': 'hendon_central',
-                                      'hour': 7,
-                                      'minute': 30},
-                                      {'area': 'goodge_street',
-                                      'hour': 8,
-                                      'minute': 25}]):
+def get_raw_content(twitter_args={'screen_name': 'northernline',
+                                  'tweet_count': 3},
+                    dark_sky_args=[{'area': 'hendon_central',
+                                    'hour': 7,
+                                    'minute': 30},
+                                   {'area': 'goodge_street',
+                                    'hour': 8,
+                                    'minute': 25}]):
     tweepy_auth = tweepy_utils.set_tweepy_account()
     api = tweepy.API(tweepy_auth)
     tweets = tweepy_utils.get_tweets(**twitter_args, api=api)
@@ -77,10 +76,11 @@ def create_email_body(raw_content):
     tweets = raw_content['twitter']
     twitter_text = f"\n{tweets}"
     twitter_html = "".join([create_tweet_html_body(time, tweet)
-                    for time, tweet in tweets.items()])
+                            for time, tweet in tweets.items()])
     weather_updates = raw_content['weather']
     weather_text = '\n'.join([str(update) for update in weather_updates])
-    weather_html = "".join([create_weather_html_body(update) for update in weather_updates])
+    weather_html = "".join([create_weather_html_body(update)
+                            for update in weather_updates])
     return {
         'text': '\n'.join([weather_text, twitter_text]),
         'html': ''.join([weather_html, twitter_html])
@@ -118,6 +118,7 @@ def main():
     send_myself_email(email_body)
     print('message sent')
     return
+
 
 if __name__ == "__main__":
     main()
