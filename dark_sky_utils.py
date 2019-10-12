@@ -56,23 +56,3 @@ def get_weather_hour_minute(area, hour, minute=None):
         if datapoint["time"] == timestamp:
             minute_datapoint = datapoint
     return {"area": area, **minute_datapoint, **overview}
-
-
-def create_weather_html_body(weather_info):
-    area = weather_info["area"].split('_')
-    area_clean = ' '.join([word.capitalize() for word in area])
-    ts = weather_info["time"]
-    time_clean = datetime.fromtimestamp(ts).strftime("%d %b %H:%M:%S")
-    body = f"""\
-    <html>
-      <body>
-        <p>
-        <b>Time</b>: {time_clean} -- <b>{area_clean}</b> <br>
-        <b>Summary</b>: {weather_info["summary"]} <br>
-        <b>Chance of {weather_info["precipType"]}</b>: {weather_info["precipProbability"]} <br>
-        <b>Intensity of {weather_info["precipType"]}</b>: {weather_info["precipIntensity"]} inch/hour <br>
-        </p>
-      </body>
-    </html>
-    """
-    return body
