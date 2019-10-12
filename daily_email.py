@@ -19,15 +19,8 @@ def get_email_credentials():
 
 def create_tweet_html_body(time, tweet):
     body = f"""\
-    <html>
-      <body>
-        <p>
         <b> {time} </b><br>
         {tweet} <br>
-        <hr>
-        </p>
-      </body>
-    </html>
     """
     return body
 
@@ -38,17 +31,10 @@ def create_weather_html_body(weather_info):
     ts = weather_info["time"]
     time_clean = datetime.fromtimestamp(ts).strftime("%d %b %H:%M:%S")
     body = f"""\
-    <html>
-      <body>
-        <p>
         <b>Time</b>: {time_clean} -- <b>{area_clean}</b> <br>
         <b>Summary</b>: {weather_info["summary"]} <br>
         <b>Chance of {weather_info["precipType"]}</b>: {weather_info["precipProbability"]} <br>
         <b>Intensity of {weather_info["precipType"]}</b>: {weather_info["precipIntensity"]} inch/hour <br>
-        <hr>
-        </p>
-      </body>
-    </html>
     """
     return body
 
@@ -77,15 +63,28 @@ def get_raw_content(twitter_args={'screen_name': 'northernline',
 def create_email_body(raw_content):
     tweets = raw_content['twitter']
     twitter_text = f"\n{tweets}"
-    twitter_html = "".join([create_tweet_html_body(time, tweet)
+    twitter_html = "<br>".join([create_tweet_html_body(time, tweet)
                             for time, tweet in tweets.items()])
     weather_updates = raw_content['weather']
     weather_text = '\n'.join([str(update) for update in weather_updates])
-    weather_html = "".join([create_weather_html_body(update)
+    weather_html = "<br>".join([create_weather_html_body(update)
                             for update in weather_updates])
+    html = f"""
+        <html>
+          <body>
+            <p style="color:black;">
+              <h2>Weather</h2> <br>
+              {weather_html} <br>
+              <hr>
+              <h2>Travel</h2> <br>
+              {twitter_html} <br>
+            </p>
+          </body>
+        </html>
+    """
     return {
         'text': '\n'.join([weather_text, twitter_text]),
-        'html': ''.join([weather_html, twitter_html])
+        'html': html
     }
 
 
