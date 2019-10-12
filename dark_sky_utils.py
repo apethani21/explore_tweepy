@@ -4,7 +4,6 @@ import requests
 from datetime import datetime, timedelta
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from email_me_tweets import send_myself_message
 
 
 location = {
@@ -77,23 +76,3 @@ def create_weather_html_body(weather_info):
     </html>
     """
     return body
-
-
-def email_me_latest_weather(weather_updates):
-    message = MIMEMultipart("alternative")
-    message["Subject"] = f"Weather update"
-    text = '\n'.join([str(update) for update in weather_updates])
-    html = "".join([create_weather_html_body(update)
-                    for update in weather_updates])
-    plain_backup = MIMEText(text, "plain")
-    html_main = MIMEText(html, "html")
-    message.attach(plain_backup)
-    message.attach(html_main)
-    send_myself_message(message.as_string())
-    return
-
-
-if __name__ == "__main__":
-    hendon_weather_update = get_weather_hour_minute("hendon_central", 16, 15)
-    fitzrovia_weather_update = get_weather_hour_minute("goodge_street", 16, 30)
-    email_me_latest_weather([hendon_weather_update, fitzrovia_weather_update])
