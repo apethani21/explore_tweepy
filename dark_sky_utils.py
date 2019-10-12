@@ -37,8 +37,8 @@ def get_today_hour_minute(hour, minute):
     now = int(time.time())
     midnight = now - (now % 86400)
     midnight = datetime.utcfromtimestamp(now - (now % 86400))
-    morning = midnight + timedelta(hours=hour, minutes=minute)
-    return int(morning.strftime("%s"))
+    day = midnight + timedelta(hours=hour, minutes=minute)
+    return int(day.strftime("%s"))
 
 
 def get_weather_hour_minute(area, hour, minute=None):
