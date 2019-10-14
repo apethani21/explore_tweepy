@@ -45,11 +45,11 @@ def create_weather_html_body(weather_info):
 def get_raw_content(twitter_args={'screen_name': 'northernline',
                                   'tweet_count': 3},
                     dark_sky_args=[{'area': 'hendon_central',
-                                    'hour': 8,
-                                    'minute': 55},
+                                    'hour': 7,
+                                    'minute': 35},
                                    {'area': 'goodge_street',
                                     'hour': 8,
-                                    'minute': 55}]):
+                                    'minute': 30}]):
     tweepy_auth = tweepy_utils.set_tweepy_account()
     api = tweepy.API(tweepy_auth)
     tweets = tweepy_utils.get_tweets(**twitter_args, api=api)
