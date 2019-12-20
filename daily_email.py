@@ -20,7 +20,7 @@ def get_email_credentials():
     return config
 
 
-def get_current_event_html():
+def get_current_events_html():
     today_date = date.today().strftime("%Y_%B_%d")
     url = 'https://en.m.wikipedia.org/wiki/Portal:Current_events'
     r = requests.get(url)
@@ -71,7 +71,8 @@ def get_raw_content(twitter_args={'screen_name': 'northernline',
                                     'minute': 35},
                                    {'area': 'goodge_street',
                                     'hour': 8,
-                                    'minute': 30}]):
+                                    'minute': 30}],
+                    get_current_events=True):
     tweepy_auth = tweepy_utils.set_tweepy_account()
     api = tweepy.API(tweepy_auth)
     try:
@@ -87,9 +88,18 @@ def get_raw_content(twitter_args={'screen_name': 'northernline',
     except:
         print("Failed to get weather updates")
         weather_updates = []
+    if get_current_events:
+        try:
+            current_events_html = get_current_events_html()
+        except:
+            print("Failed to get current events")
+            current_events_html = ''
+    else:
+        current_events_html = ''
     return {
-        'twitter': tweets,
-        'weather': weather_updates
+        "twitter": tweets,
+        "weather": weather_updates,
+        "current_events": current_events_html
     }
 
 
@@ -102,11 +112,7 @@ def create_email_body(raw_content):
     weather_text = '\n'.join([str(update) for update in weather_updates])
     weather_html = "<br>".join([create_weather_html_body(update)
                                 for update in weather_updates])
-    try:
-        current_event_html = get_current_event_html()
-    except:
-        print("Failed to get current events")
-        current_event_html = ''
+    current_events_html = raw_content['current_events']
     html = f"""
         <html>
           <body>
@@ -117,7 +123,7 @@ def create_email_body(raw_content):
               <h2>Travel</h2> <br>
               {twitter_html} <br>
               <hr>
-              {current_event_html} <br>
+              {current_events_html} <br>
             </p>
           </body>
         </html>
