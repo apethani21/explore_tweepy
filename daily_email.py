@@ -1,12 +1,14 @@
 import os
 import sys
 import ssl
+import bs4
 import json
 import smtplib
 import tweepy
+import requests
 import tweepy_utils
 import dark_sky_utils
-from datetime import datetime
+from datetime import datetime, date
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -16,6 +18,25 @@ def get_email_credentials():
     with open(f"{home}/keys/gmail/sender_config.json", "r") as f:
         config = json.loads(f.read())
     return config
+
+
+def get_current_event_html():
+    today_date = date.today().strftime("%Y_%B_%d")
+    url = 'https://en.m.wikipedia.org/wiki/Portal:Current_events'
+    r = requests.get(url)
+    soup = bs4.BeautifulSoup(r.content, 'html.parser')
+    anchors = soup.findAll('a')
+    for anchor in anchors:
+        anchor.replace_with_children()
+    today_block = soup.find(id=today_date)
+    html = today_block.contents[-1].renderContents().decode()
+    nicer_datetime = ' '.join(reversed(today_date.split('_')))
+    header = f"""
+             <b> <font size='4'>
+             Current Events - {nicer_datetime}
+             </font> </b> <br><br>
+              """
+    return header + html
 
 
 def create_tweet_html_body(time, tweet):
@@ -53,11 +74,19 @@ def get_raw_content(twitter_args={'screen_name': 'northernline',
                                     'minute': 30}]):
     tweepy_auth = tweepy_utils.set_tweepy_account()
     api = tweepy.API(tweepy_auth)
-    tweets = tweepy_utils.get_tweets(**twitter_args, api=api)
-    print('tweets obtained')
-    weather_updates = [dark_sky_utils.get_weather_hour_minute(**arg)
-                       for arg in dark_sky_args]
-    print('weather updates obtained')
+    try:
+        tweets = tweepy_utils.get_tweets(**twitter_args, api=api)
+        print('tweets obtained')
+    except:
+        print("Failed to get tweets")
+        tweets = ''
+    try:
+        weather_updates = [dark_sky_utils.get_weather_hour_minute(**arg)
+                           for arg in dark_sky_args]
+        print('weather updates obtained')
+    except:
+        print("Failed to get weather updates")
+        weather_updates = []
     return {
         'twitter': tweets,
         'weather': weather_updates
@@ -68,11 +97,16 @@ def create_email_body(raw_content):
     tweets = raw_content['twitter']
     twitter_text = f"\n{tweets}"
     twitter_html = "<br>".join([create_tweet_html_body(time, tweet)
-                            for time, tweet in tweets.items()])
+                                for time, tweet in tweets.items()])
     weather_updates = raw_content['weather']
     weather_text = '\n'.join([str(update) for update in weather_updates])
     weather_html = "<br>".join([create_weather_html_body(update)
-                            for update in weather_updates])
+                                for update in weather_updates])
+    try:
+        current_event_html = get_current_event_html()
+    except:
+        print("Failed to get current events")
+        current_event_html = ''
     html = f"""
         <html>
           <body>
@@ -82,6 +116,8 @@ def create_email_body(raw_content):
               <hr>
               <h2>Travel</h2> <br>
               {twitter_html} <br>
+              <hr>
+              {current_event_html} <br>
             </p>
           </body>
         </html>
