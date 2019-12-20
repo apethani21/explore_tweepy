@@ -1,0 +1,11 @@
+{
+    "twitter_args": {"screen_name": "northernline",
+                     "tweet_count": 3},
+    "dark_sky_args": [{"area": "hendon_central",
+                       "hour": 7,
+                       "minute": 35},
+                      {"area": "goodge_street",
+                       "hour": 8,
+                       "minute": 30}]
+}
+                    

@@ -6,13 +6,13 @@ from pprint import pprint
 
 def get_tweepy_auth():
     home = os.path.expanduser('~')
-    with open(f"{home}/twitter_key", 'r') as f:
+    with open(f"{home}/keys/twitter/twitter_key", 'r') as f:
         twitter_key = f.read().rstrip('\n')
-    with open(f"{home}/twitter_secret_key", 'r') as f:
+    with open(f"{home}/keys/twitter/twitter_secret_key", 'r') as f:
         twitter_secret_key = f.read().rstrip('\n')
-    with open(f"{home}/twitter_access_token", 'r') as f:
+    with open(f"{home}/keys/twitter/twitter_access_token", 'r') as f:
         twitter_access_token = f.read().rstrip('\n')
-    with open(f"{home}/twitter_secret_access_token", 'r') as f:
+    with open(f"{home}/keys/twitter/twitter_secret_access_token", 'r') as f:
         twitter_secret_access_token = f.read().rstrip('\n')
     return {
         "twitter_key": twitter_key,

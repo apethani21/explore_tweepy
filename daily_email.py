@@ -1,4 +1,5 @@
 import os
+import sys
 import ssl
 import json
 import smtplib
@@ -12,7 +13,7 @@ from email.mime.multipart import MIMEMultipart
 
 def get_email_credentials():
     home = os.path.expanduser('~')
-    with open(f"{home}/sender_config.json", "r") as f:
+    with open(f"{home}/keys/gmail/sender_config.json", "r") as f:
         config = json.loads(f.read())
     return config
 
@@ -116,8 +117,8 @@ def send_myself_email(raw_content):
     return
 
 
-def main():
-    raw_content = get_raw_content()
+def main(config):
+    raw_content = get_raw_content(config)
     email_body = create_email_body(raw_content)
     send_myself_email(email_body)
     print('message sent')
@@ -125,4 +126,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    args = sys.argv[1:]
+    args = dict([arg.split('=') for arg in args])
+    config_name = args['config']
+    print(f"config: {config_name}")
+    with open(f'./configs/{config_name}', 'r') as f:
+        config = json.loads(f.read())
+    main(**config)

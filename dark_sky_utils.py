@@ -20,12 +20,12 @@ location = {
 
 def get_dark_sky_key():
     home = os.path.expanduser('~')
-    with open(f"{home}/dark_sky_key", "r") as f:
+    with open(f"{home}/keys/dark_sky/dark_sky_key", "r") as f:
         dark_sky_key = f.read().rstrip("\n")
     return dark_sky_key
 
 
-def get_weather(latitude=51.583017, longitude=-0.226472):
+def get_weather(latitude, longitude):
     api_key = get_dark_sky_key()
     url = f"https://api.darksky.net/forecast/{api_key}/{latitude},{longitude}"
     r = requests.get(url, params={"exclude": "currently,flags"})
