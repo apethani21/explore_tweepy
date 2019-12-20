@@ -20,7 +20,7 @@ location = {
 
 def get_dark_sky_key():
     home = os.path.expanduser('~')
-    with open(f"{home}/dark_sky_key", "r") as f:
+    with open(f"{home}/keys/dark_sky/dark_sky_key", "r") as f:
         dark_sky_key = f.read().rstrip("\n")
     return dark_sky_key
 

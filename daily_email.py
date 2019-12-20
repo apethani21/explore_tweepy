@@ -13,7 +13,7 @@ from email.mime.multipart import MIMEMultipart
 
 def get_email_credentials():
     home = os.path.expanduser('~')
-    with open(f"{home}/sender_config.json", "r") as f:
+    with open(f"{home}/keys/gmail/sender_config.json", "r") as f:
         config = json.loads(f.read())
     return config
 
