@@ -25,7 +25,7 @@ def get_dark_sky_key():
     return dark_sky_key
 
 
-def get_weather(latitude=51.583017, longitude=-0.226472):
+def get_weather(latitude, longitude):
     api_key = get_dark_sky_key()
     url = f"https://api.darksky.net/forecast/{api_key}/{latitude},{longitude}"
     r = requests.get(url, params={"exclude": "currently,flags"})
