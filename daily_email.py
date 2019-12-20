@@ -77,22 +77,22 @@ def get_raw_content(twitter_args={'screen_name': 'northernline',
     api = tweepy.API(tweepy_auth)
     try:
         tweets = tweepy_utils.get_tweets(**twitter_args, api=api)
-        print('tweets obtained')
+        print(f"{datetime.now().strftime('%H:%M:%S')} - tweets obtained")
     except Exception as e:
-        print("Failed to get tweets:", e)
+        print(f"{datetime.now().strftime('%H:%M:%S')} - failed to get tweets:", e)
         tweets = ''
     try:
         weather_updates = [dark_sky_utils.get_weather_hour_minute(**arg)
                            for arg in dark_sky_args]
-        print('weather updates obtained')
+        print(f"{datetime.now().strftime('%H:%M:%S')} - weather updates obtained")
     except Exception as e:
-        print("Failed to get weather updates", e)
+        print(f"{datetime.now().strftime('%H:%M:%S')} - failed to get weather updates", e)
         weather_updates = []
     if get_current_events:
         try:
             current_events_html = get_current_events_html()
         except Exception as e:
-            print("Failed to get current events", e)
+            print(f"{datetime.now().strftime('%H:%M:%S')} - failed to get current events", e)
             current_events_html = ''
     else:
         current_events_html = ''
@@ -154,7 +154,7 @@ def send_myself_email(raw_content):
                           port=465,
                           context=context) as server:
         server.login(sender_email, password)
-        print('sending message..')
+        print(f"{datetime.now().strftime('%H:%M:%S')} - sending message..")
         server.send_message(message, sender_email, receiver_email)
     return
 
@@ -163,7 +163,7 @@ def main(config):
     raw_content = get_raw_content(config)
     email_body = create_email_body(raw_content)
     send_myself_email(email_body)
-    print('message sent')
+    print(f"{datetime.now().strftime('%H:%M:%S')} - message sent")
     return
 
 
