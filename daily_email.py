@@ -78,21 +78,21 @@ def get_raw_content(twitter_args={'screen_name': 'northernline',
     try:
         tweets = tweepy_utils.get_tweets(**twitter_args, api=api)
         print('tweets obtained')
-    except:
-        print("Failed to get tweets")
+    except Exception as e:
+        print("Failed to get tweets:", e)
         tweets = ''
     try:
         weather_updates = [dark_sky_utils.get_weather_hour_minute(**arg)
                            for arg in dark_sky_args]
         print('weather updates obtained')
-    except:
-        print("Failed to get weather updates")
+    except Exception as e:
+        print("Failed to get weather updates", e)
         weather_updates = []
     if get_current_events:
         try:
             current_events_html = get_current_events_html()
-        except:
-            print("Failed to get current events")
+        except Exception as e:
+            print("Failed to get current events", e)
             current_events_html = ''
     else:
         current_events_html = ''
