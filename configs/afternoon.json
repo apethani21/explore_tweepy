@@ -7,5 +7,5 @@
                       {"area": "goodge_street",
                        "hour": 17,
                        "minute": 35}],
-    "get_current_events": false
+    "get_current_events": true
 }
