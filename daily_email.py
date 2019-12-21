@@ -160,7 +160,7 @@ def send_myself_email(raw_content):
 
 
 def main(config):
-    raw_content = get_raw_content(config)
+    raw_content = get_raw_content(**config)
     email_body = create_email_body(raw_content)
     send_myself_email(email_body)
     print(f"{datetime.now().strftime('%H:%M:%S')} - message sent")
@@ -174,4 +174,4 @@ if __name__ == "__main__":
     print(f"config: {config_name}")
     with open(f'./configs/{config_name}', 'r') as f:
         config = json.loads(f.read())
-    main(**config)
+    main(config)
