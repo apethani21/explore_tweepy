@@ -25,15 +25,14 @@ def get_current_events_html():
     url = 'https://en.m.wikipedia.org/wiki/Portal:Current_events'
     r = requests.get(url)
     soup = bs4.BeautifulSoup(r.content, 'html.parser')
-    anchors = soup.findAll('a')
+    anchors = soup.find_all('a')
     for anchor in anchors:
         anchor.replace_with_children()
     today_block = soup.find(id=today_date)
     html = today_block.contents[-1].renderContents().decode()
-    nicer_datetime = ' '.join(reversed(today_date.split('_')))
     header = f"""
              <b> <font size='4'>
-             Current Events - {nicer_datetime}
+             Current Events
              </font> </b> <br><br>
               """
     return header + html
