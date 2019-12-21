@@ -1,4 +1,4 @@
-# Sending an email containing weather and travel updates
+# Sending an email containing weather, travel and news updates
 
 - Getting travel related tweets from Twitter using tweepy
 - Getting weather information from [Dark Sky](https://darksky.net/dev)
