@@ -85,13 +85,13 @@ def get_raw_content(twitter_args={'screen_name': 'northernline',
                            for arg in dark_sky_args]
         print(f"{datetime.now().strftime('%H:%M:%S')} - weather updates obtained")
     except Exception as e:
-        print(f"{datetime.now().strftime('%H:%M:%S')} - failed to get weather updates", e)
+        print(f"{datetime.now().strftime('%H:%M:%S')} - failed to get weather updates:", e)
         weather_updates = []
     if get_current_events:
         try:
             current_events_html = get_current_events_html()
         except Exception as e:
-            print(f"{datetime.now().strftime('%H:%M:%S')} - failed to get current events", e)
+            print(f"{datetime.now().strftime('%H:%M:%S')} - failed to get current events:", e)
             current_events_html = ''
     else:
         current_events_html = ''
