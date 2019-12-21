@@ -31,9 +31,9 @@ def get_current_events_html():
     today_block = soup.find(id=today_date)
     html = today_block.contents[-1].renderContents().decode()
     header = f"""
-             <b> <font size='4'>
+             <h2 style="font-size:20px;">
              Current Events
-             </font> </b> <br><br>
+             </h2> <br>
               """
     return header + html
 
@@ -116,10 +116,10 @@ def create_email_body(raw_content):
         <html>
           <body>
             <p style="color:black;">
-              <h2>Weather</h2> <br>
+              <h2 style="font-size:20px;">Weather</h2> <br>
               {weather_html} <br>
               <hr>
-              <h2>Travel</h2> <br>
+              <h2 style="font-size:20px;">Travel</h2> <br>
               {twitter_html} <br>
               <hr>
               {current_events_html} <br>
