@@ -57,7 +57,10 @@ def get_tweets(screen_name, tweet_count, api):
     return dict((list(tweets.items())[:tweet_count]))
 
 
-if __name__ == "__main__":
+def test():
     tweepy_auth = set_tweepy_account()
     api = tweepy.API(tweepy_auth)
     pprint(get_tweets('northernline', 3, api))
+
+if __name__ == "__main__":
+    test()

@@ -2,8 +2,6 @@ import os
 import time
 import requests
 from datetime import datetime, timedelta
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 
 
 location = {
@@ -36,7 +34,7 @@ def get_weather(latitude, longitude):
 def get_today_hour_minute(hour, minute):
     now = int(time.time())
     midnight = now - (now % 86400)
-    midnight = datetime.utcfromtimestamp(now - (now % 86400))
+    midnight = datetime.utcfromtimestamp(midnight)
     day = midnight + timedelta(hours=hour, minutes=minute)
     return int(day.strftime("%s"))
 
