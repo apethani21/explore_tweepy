@@ -138,7 +138,7 @@ def send_myself_email(raw_content):
     receiver_email = email_credentials["receiver_email"]
     sender_email = email_credentials["sender_email"]
     message = MIMEMultipart("alternative")
-    message["Subject"] = f"Morning update - {date.today().strftime('%a %d %b %y')}"
+    message["Subject"] = f"UPDATE - {date.today().strftime('%a %d %b %y')}"
     text = raw_content.get('text', 'FAILED TO GET TEXT')
     html = raw_content['html']
     plain_backup = MIMEText(text, "plain")
