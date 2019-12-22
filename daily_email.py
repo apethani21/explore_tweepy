@@ -8,7 +8,7 @@ import tweepy
 import requests
 import tweepy_utils
 import dark_sky_utils
-from datetime import datetime, date
+from datetime import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -27,7 +27,7 @@ def get_email_credentials():
 
 
 def get_current_events_html():
-    today_date = date.today().strftime("%Y_%B_%d")
+    today_date = datetime.now().strftime("%Y_%B_%d")
     url = 'https://en.m.wikipedia.org/wiki/Portal:Current_events'
     r = requests.get(url)
     soup = bs4.BeautifulSoup(r.content, 'html.parser')
@@ -145,7 +145,7 @@ def send_myself_email(raw_content):
     receiver_email = email_credentials["receiver_email"]
     sender_email = email_credentials["sender_email"]
     message = MIMEMultipart("alternative")
-    message["Subject"] = f"UPDATE - {date.today().strftime('%a %d %b %y')}"
+    message["Subject"] = f"UPDATE - {datetime.now().strftime('%a %d %b %y')}"
     text = raw_content.get('text', 'FAILED TO GET TEXT')
     html = raw_content['html']
     plain_backup = MIMEText(text, "plain")
