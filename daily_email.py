@@ -76,22 +76,22 @@ def get_raw_content(twitter_args={'screen_name': 'northernline',
     api = tweepy.API(tweepy_auth)
     try:
         tweets = tweepy_utils.get_tweets(**twitter_args, api=api)
-        print(f"{datetime.now().strftime('%H:%M:%S')} - tweets obtained")
+        print(f"{datetime.now().strftime('%d-%m-%y %H:%M:%S')} - tweets obtained")
     except Exception as e:
-        print(f"{datetime.now().strftime('%H:%M:%S')} - failed to get tweets:", e)
+        print(f"{datetime.now().strftime('%d-%m-%y %H:%M:%S')} - failed to get tweets:", e)
         tweets = ''
     try:
         weather_updates = [dark_sky_utils.get_weather_hour_minute(**arg)
                            for arg in dark_sky_args]
-        print(f"{datetime.now().strftime('%H:%M:%S')} - weather updates obtained")
+        print(f"{datetime.now().strftime('%d-%m-%y %H:%M:%S')} - weather updates obtained")
     except Exception as e:
-        print(f"{datetime.now().strftime('%H:%M:%S')} - failed to get weather updates:", e)
+        print(f"{datetime.now().strftime('%d-%m-%y %H:%M:%S')} - failed to get weather updates:", e)
         weather_updates = []
     if get_current_events:
         try:
             current_events_html = get_current_events_html()
         except Exception as e:
-            print(f"{datetime.now().strftime('%H:%M:%S')} - failed to get current events:", e)
+            print(f"{datetime.now().strftime('%d-%m-%y %H:%M:%S')} - failed to get current events:", e)
             current_events_html = ''
     else:
         current_events_html = ''
@@ -153,7 +153,7 @@ def send_myself_email(raw_content):
                           port=465,
                           context=context) as server:
         server.login(sender_email, password)
-        print(f"{datetime.now().strftime('%H:%M:%S')} - sending message..")
+        print(f"{datetime.now().strftime('%d-%m-%y %H:%M:%S')} - sending message..")
         server.send_message(message, sender_email, receiver_email)
     return
 
@@ -162,7 +162,7 @@ def main(config):
     raw_content = get_raw_content(**config)
     email_body = create_email_body(raw_content)
     send_myself_email(email_body)
-    print(f"{datetime.now().strftime('%H:%M:%S')} - message sent")
+    print(f"{datetime.now().strftime('%d-%m-%y %H:%M:%S')} - message sent")
     return
 
 
@@ -170,7 +170,7 @@ if __name__ == "__main__":
     args = sys.argv[1:]
     args = dict([arg.split('=') for arg in args])
     config_name = args['config']
-    print(f"config: {config_name}")
+    print(f"{datetime.now().strftime('%d-%m-%y %H:%M:%S')} - config: {config_name}")
     with open(f'./configs/{config_name}', 'r') as f:
         config = json.loads(f.read())
     main(config)
