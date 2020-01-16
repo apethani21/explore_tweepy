@@ -1,4 +1,3 @@
-#!/Users/ajay/anaconda3/bin/python
 import os
 import sys
 import ssl
