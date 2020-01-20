@@ -45,12 +45,12 @@ def get_weather_hour_minute(area, hour, minute=None):
     if minute is None:
         minute = 0
     timestamp = get_today_hour_minute(hour, minute)
-    data_block = weather_data["minutely"]
     overview = {
-        "summary": data_block["summary"],
-        "icon": data_block["icon"]
+        "day_summary": weather_data["hourly"].get("summary"),
+        "summary": weather_data["minutely"]["summary"],
+        "icon": weather_data["minutely"]["icon"],
     }
-    for datapoint in data_block["data"]:
+    for datapoint in weather_data["minutely"]["data"]:
         if datapoint["time"] == timestamp:
             minute_datapoint = datapoint
     return {"area": area, **minute_datapoint, **overview}

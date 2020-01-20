@@ -59,7 +59,7 @@ def create_weather_html_body(weather_info):
     time_clean = datetime.fromtimestamp(ts).strftime("%d %b %H:%M:%S")
     body = f"""\
         <b>Time</b>: {time_clean} -- <b>{area_clean}</b> <br>
-        <b>Summary</b>: {weather_info["summary"]} <br>
+        <b>Summary</b>: {weather_info["summary"]} {weather_info["day_summary"]} <br>
     """
     if "precipType" in weather_info:
         body += f"""
