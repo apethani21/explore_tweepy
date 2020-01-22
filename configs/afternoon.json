@@ -2,10 +2,10 @@
     "twitter_args": {"screen_name": "northernline",
                      "tweet_count": 3},
     "dark_sky_args": [{"area": "hendon_central",
-                       "hour": 21,
-                       "minute": 0},
+                       "hour": 18,
+                       "minute": 30},
                       {"area": "goodge_street",
-                       "hour": 21,
-                       "minute": 55}],
+                       "hour": 17,
+                       "minute": 35}],
     "get_current_events": true
 }
