@@ -44,8 +44,8 @@ def bearing_to_cardinal(bearing):
         return None
     if not 0 <= bearing <= 360:
         return "Invalid bearing value"
-    cardinal_directions = ["N", "NE", "E", "SE",
-                           "S", "SW", "W", "NW"]
+    cardinal_directions = ["North", "North East", "East", "South East",
+                           "South", "South West", "West", "North West"]
     decision_points = [180/len(cardinal_directions) + 45*i
                        for i in range(len(cardinal_directions))]
     for i, boundary in enumerate(decision_points):
