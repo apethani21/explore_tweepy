@@ -39,6 +39,21 @@ def get_today_hour_minute(hour, minute):
     return int(day.strftime("%s"))
 
 
+def bearing_to_cardinal(bearing):
+    if bearing is None:
+        return None
+    if not 0 <= bearing <= 360:
+        return "Invalid bearing value"
+    cardinal_directions = ["N", "NE", "E", "SE",
+                           "S", "SW", "W", "NW"]
+    decision_points = [180/len(cardinal_directions) + 45*i
+                       for i in range(len(cardinal_directions))]
+    for i, boundary in enumerate(decision_points):
+        if boundary > bearing:
+            return cardinal_directions[i]
+    return 'N'
+
+
 def get_weather_hour_minute(area, hour, minute=None):
     latitude_longitude = location[area]
     weather_data = get_weather(**latitude_longitude)
@@ -58,10 +73,12 @@ def get_weather_hour_minute(area, hour, minute=None):
         if datapoint["time"] == front_hour_timestamp:
             temperature = datapoint["temperature"]
             wind_speed = datapoint["windSpeed"]
+            wind_bearing = datapoint.get("windBearing")
     return {
         "area": area,
         "temperature": temperature,
         "wind_speed": wind_speed,
+        "wind_dir": bearing_to_cardinal(wind_bearing)
         **minute_datapoint,
          **overview
     }
