@@ -80,5 +80,5 @@ def get_weather_hour_minute(area, hour, minute=None):
         "wind_speed": wind_speed,
         "wind_dir": bearing_to_cardinal(wind_bearing),
         **minute_datapoint,
-         **overview
+        **overview
     }

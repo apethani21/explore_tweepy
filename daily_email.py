@@ -58,13 +58,14 @@ def create_weather_html_body(weather_info):
     ts = weather_info["time"]
     time_clean = datetime.fromtimestamp(ts).strftime("%d %b %H:%M:%S")
     body = f"""\
-        <b>Time</b>: {time_clean} -- <b>{area_clean}</b> <br>
-        <b>Summary</b>: {weather_info["summary"]} {weather_info["day_summary"]} <br>
-        <b>Temperature</b>: {weather_info["temperature"]}\u00b0C <br>
+        <b>Time</b>: {time_clean} -- <b>{area_clean}</b><br>
+        <b>Summary</b>: {weather_info["summary"]} {weather_info["day_summary"]}<br>
+        <b>Temperature</b>: {weather_info["temperature"]}\u00b0C<br>
     """
+    wind_dir = weather_info["wind_dir"]
     if wind_dir is not None:
         body += f"""
-        <b>Wind Speed</b>: {weather_info["wind_speed"]} mph from the {weather_info["wind_dir"]}. <br>
+        <b>Wind Speed</b>: {weather_info["wind_speed"]} mph from the {wind_dir}. <br>
         """
     if "precipType" in weather_info:
         body += f"""

@@ -62,5 +62,6 @@ def test():
     api = tweepy.API(tweepy_auth)
     pprint(get_tweets('northernline', 3, api))
 
+
 if __name__ == "__main__":
     test()
