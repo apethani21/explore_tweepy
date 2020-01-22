@@ -25,7 +25,7 @@ def get_dark_sky_key():
 
 def get_weather(latitude, longitude):
     api_key = get_dark_sky_key()
-    url = f"https://api.darksky.net/forecast/{api_key}/{latitude},{longitude}?units=si"
+    url = f"https://api.darksky.net/forecast/{api_key}/{latitude},{longitude}?units=uk2"
     r = requests.get(url, params={"exclude": "currently,flags"})
     r.raise_for_status()
     return r.json()
@@ -45,6 +45,7 @@ def get_weather_hour_minute(area, hour, minute=None):
     if minute is None:
         minute = 0
     timestamp = get_today_hour_minute(hour, minute)
+    front_hour_timestamp = get_today_hour_minute(hour+1, 0)
     overview = {
         "day_summary": weather_data["hourly"].get("summary"),
         "summary": weather_data["minutely"]["summary"],
@@ -53,4 +54,14 @@ def get_weather_hour_minute(area, hour, minute=None):
     for datapoint in weather_data["minutely"]["data"]:
         if datapoint["time"] == timestamp:
             minute_datapoint = datapoint
-    return {"area": area, **minute_datapoint, **overview}
+    for datapoint in weather_data["hourly"]["data"]:
+        if datapoint["time"] == front_hour_timestamp:
+            temperature = datapoint["temperature"]
+            wind_speed = datapoint["windSpeed"]
+    return {
+        "area": area,
+        "temperature": temperature,
+        "wind_speed": wind_speed,
+        **minute_datapoint,
+         **overview
+    }

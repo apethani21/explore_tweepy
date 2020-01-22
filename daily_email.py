@@ -60,6 +60,8 @@ def create_weather_html_body(weather_info):
     body = f"""\
         <b>Time</b>: {time_clean} -- <b>{area_clean}</b> <br>
         <b>Summary</b>: {weather_info["summary"]} {weather_info["day_summary"]} <br>
+        <b>Temperature</b>: {weather_info["temperature"]}\u00b0C <br>
+        <b>Wind Speed</b>: {weather_info["wind_speed"]} mph <br>
     """
     if "precipType" in weather_info:
         body += f"""
