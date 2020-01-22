@@ -65,7 +65,7 @@ def create_weather_html_body(weather_info):
     wind_dir = weather_info["wind_dir"]
     if wind_dir is not None:
         body += f"""
-        <b>Wind Speed</b>: {weather_info["wind_speed"]} mph from {weather_info["wind_dir"]} direction <br>
+        <b>Wind Speed</b>: {weather_info["wind_speed"]} mph from the {weather_info["wind_dir"]}. <br>
         """
     if "precipType" in weather_info:
         body += f"""
