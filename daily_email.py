@@ -27,7 +27,7 @@ def get_email_credentials():
 
 
 def get_current_events_html():
-    today_date = datetime.now().strftime("%Y_%B_%d")
+    today_date = datetime.now().strftime("%Y_%B_%-d")
     url = 'https://en.m.wikipedia.org/wiki/Portal:Current_events'
     r = requests.get(url)
     soup = bs4.BeautifulSoup(r.content, 'html.parser')
