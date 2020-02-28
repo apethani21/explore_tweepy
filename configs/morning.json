@@ -3,10 +3,10 @@
                      "tweet_count": 3},
     "dark_sky_args": [{"area": "hendon_central",
                        "hour": 7,
-                       "minute": 35},
+                       "minute": 25},
                       {"area": "goodge_street",
                        "hour": 8,
-                       "minute": 30}],
+                       "minute": 20}],
     "get_current_events": true
 }
                     
