@@ -51,7 +51,7 @@ def bearing_to_cardinal(bearing):
     for i, boundary in enumerate(decision_points):
         if boundary > bearing:
             return cardinal_directions[i]
-    return 'N'
+    return 'North'
 
 
 def get_weather_hour_minute(area, hour, minute=None):
