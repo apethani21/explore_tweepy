@@ -26,6 +26,13 @@ def get_email_credentials():
     return config
 
 
+def get_aws_ses_credentials():
+    home = os.path.expanduser('~')
+    with open(f"{home}/keys/aws/ses-credentials.json", "r") as f:
+        config = json.loads(f.read())
+    return config
+
+
 def get_current_events_html():
     today_date = datetime.now().strftime("%Y_%B_%-d")
     url = 'https://en.m.wikipedia.org/wiki/Portal:Current_events'
@@ -146,7 +153,7 @@ def create_email_body(raw_content):
     }
 
 
-def send_myself_email(raw_content):
+def send_email(raw_content, use_ses=False):
     email_credentials = get_email_credentials()
     receiver_email = email_credentials["receiver_email"]
     sender_email = email_credentials["sender_email"]
@@ -162,19 +169,33 @@ def send_myself_email(raw_content):
     message.attach(html_main)
     password = email_credentials["sender_password"]
     context = ssl.create_default_context()
-    with smtplib.SMTP_SSL("smtp.gmail.com",
-                          port=465,
-                          context=context) as server:
-        server.login(sender_email, password)
-        log("sending message..", "INFO")
-        server.send_message(message, sender_email, receiver_email)
-    return
+    if use_ses:
+        log("using AWS SES", "INFO")
+        aws_ses_credentials = get_aws_ses_credentials()
+        smtp_username = aws_ses_credentials["smtp-username"]
+        smtp_password = aws_ses_credentials["smtp-password"]
+        with smtplib.SMTP("email-smtp.eu-west-2.amazonaws.com",
+                          port=587) as server:
+            server.starttls()
+            server.login(smtp_username, smtp_password)
+            log("sending message..", "INFO")
+            server.send_message(message, sender_email, receiver_email)
+            return
+
+    else:
+        with smtplib.SMTP_SSL("smtp.gmail.com",
+                              port=587,
+                              context=context) as server:
+            server.login(sender_email, password)
+            log("sending message..", "INFO")
+            server.send_message(message, sender_email, receiver_email)
+            return
 
 
-def main(config):
+def main(config, use_ses=False):
     raw_content = get_raw_content(**config)
     email_body = create_email_body(raw_content)
-    send_myself_email(email_body)
+    send_email(email_body, use_ses)
     log("message sent", "INFO")
     return
 
@@ -183,7 +204,8 @@ if __name__ == "__main__":
     args = sys.argv[1:]
     args = dict([arg.split('=') for arg in args])
     config_name = args['config']
-    log(f"config: {config_name}", "INFO")
+    use_ses = {'true': True, 'false': False}[args['use-ses'].lower()]
+    log(f"config: {config_name}, use_ses: {use_ses}", "INFO")
     with open(f'./configs/{config_name}', 'r') as f:
         config = json.loads(f.read())
-    main(config)
+    main(config, use_ses)
